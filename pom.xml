@@ -86,6 +86,12 @@
                 <version>2.1.5.RELEASE</version>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>sre/main/resources</directory>
+            </resource>
+        </resources>
     </build>
+
 
 </project>

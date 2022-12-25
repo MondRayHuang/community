@@ -1,10 +1,7 @@
 package com.nowcoder.community.dao;
 
 import com.nowcoder.community.entity.LoginTicket;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface LoginTicketMapper {
@@ -14,12 +11,13 @@ public interface LoginTicketMapper {
                     "value (#{userId},#{ticket},#{status},#{expired})"
             }
     )
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     int insertLoginTicket(LoginTicket loginTicket);
 
     @Update({
             "update login_ticket set status = #{status} where ticket = #{ticket}"
     })
-    int updateStatus(String ticket,int status);
+    int updateStatus(String ticket, int status);
 
     @Select({
             "select id,user_id,status,ticket,expired",

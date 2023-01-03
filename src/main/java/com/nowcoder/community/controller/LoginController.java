@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
+import com.nowcoder.community.util.HostHolder;
 import com.nowcoder.community.util.MailClient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class LoginController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
+    @Autowired
+    private HostHolder hostHolder;
+
     @RequestMapping(path = "/register",method = RequestMethod.GET )
     public String getRegisterPage(){
         return "/site/register";
@@ -47,6 +51,9 @@ public class LoginController implements CommunityConstant {
 
     @RequestMapping(path = "/login",method = RequestMethod.GET )
     public String getLoginPage(){
+        if(hostHolder.getUser() != null){
+            return "redirect:/index";
+        }
         return "/site/login";
     }
 
@@ -103,6 +110,7 @@ public class LoginController implements CommunityConstant {
     @RequestMapping(path = "/login",method = RequestMethod.POST)
     public String login(String username,String password,String code,boolean rememberme,
                         HttpServletResponse response,HttpSession httpSession,Model model){
+
         //检查验证码
         String kaptcha = (String)(httpSession.getAttribute("kaptcha"));
         if(StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !kaptcha.equals(code)){
